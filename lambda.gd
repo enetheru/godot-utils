@@ -51,10 +51,13 @@ static func bor( a:int, b:int ) -> bool:
 
 
 static func keys( d:Dictionary, f:Callable ) -> Array:
-	return d.keys().filter(func(key:Variant):
+	return d.keys().filter(func(key:Variant) -> Variant:
 		return f.call(d[key]) )
 
 
 # Accumulators
 static func sumf(acc: float, t: float) -> float:
 	return acc + t
+
+static func max_size(acc: int, t: Variant) -> float:
+	return max( acc, len( t ) )
