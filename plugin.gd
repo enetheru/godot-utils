@@ -16,13 +16,13 @@ class RunObject:
 		p = plugin; c = run_func
 
 	func run() -> void:
-		Util.printy( "run()", null, self )
+		print( "run()" )
 		await c.call()
 		p.active_run = null
 		finished.emit()
 
 	func _run() -> void:
-		Util.printy( "_run()", null, self )
+		print( "_run()" )
 
 
 static var active_run : RunObject
@@ -33,29 +33,35 @@ func _init() -> void:
 
 
 func _enter_tree() -> void:
-	Util.printy("_enter_tree()", null, self)
-	Util.printy( get_path() )
+	print("_enter_tree()")
+
+	var editor_theme : Theme = EditorInterface.get_editor_theme()
+	var button_icon : Texture2D = editor_theme.get_icon("Button", "EditorIcons")
+	add_custom_type("RichIconButton", "Control", preload('ui/rich_icon_button.gd'), button_icon)
+
+	print( get_path() )
 
 
 func _exit_tree() -> void:
-	Util.printy("_exit_tree()", null, self)
+	print("_exit_tree()")
+	remove_custom_type("RichIconButton")
 
 
 static func check() -> void:
 	if is_instance_valid( plugin.active_run ):
-		Util.printy("Warning: active_run was still a valid instance.")
+		print("Warning: active_run was still a valid instance.")
 		active_run = null
 
 
 static func run( run_func : Callable ) -> void:
-	Util.printy("run(%s)", run_func.get_method(), plugin)
+	print("run(%s)" % run_func.get_method())
 	check()
 	active_run = RunObject.new( plugin, run_func )
 	active_run.run()
 
 
-static func run_object( run_object : RunObject ) -> void:
-	Util.printy("run_object(%s)", run_object, plugin)
+static func run_object( object : RunObject ) -> void:
+	print("run_object(%s)" % object)
 	check()
-	active_run = run_object
+	active_run = object
 	active_run.run()

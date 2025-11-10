@@ -7,10 +7,10 @@ static func test_or_wait(
 			) -> Variant:
 	var test_result : Variant = test.call()
 	if test_result == expects: return test_result == expects
-	Util.printy("Note: test_or_wait( '%s()', expects '%s' got '%s'" % [
+	print("Note: test_or_wait( '%s()', expects '%s' got '%s'" % [
 		test.get_method(),test_result, expects
 	])
-	Util.printy("Waiting: for %s.%s" % [sig.get_object(),sig.get_name()])
+	print("Waiting: for %s.%s" % [sig.get_object(),sig.get_name()])
 	await sig
-	Util.printy("Resuming: after %s.%s" % [sig.get_object(),sig.get_name()])
+	print("Resuming: after %s.%s" % [sig.get_object(),sig.get_name()])
 	return test.call() == expects

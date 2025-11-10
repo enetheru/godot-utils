@@ -1,16 +1,19 @@
 @tool
 extends EditorScript
 
+const EditorLog = preload('uid://babswmnh2kosn')
+
+
 func _run() -> void:
-	Util.printy( "_run()", null, self )
+	EditorLog.printy( "_run()", null, self )
 
 	if is_instance_valid(EnetheruUtils.plugin):
 		EnetheruUtils.run_object( MyRunOb.new() )
 	else:
-		Util.printy("Enetheru.utils plugin is not enabled.")
+		EditorLog.printy("Enetheru.utils plugin is not enabled.")
 		return
 
-	Util.printy( "H1EditorScript Finished" )
+	EditorLog.printy( "H1EditorScript Finished" )
 
 
 class MyRunOb extends EnetheruUtils.RunObject:
@@ -22,15 +25,15 @@ class MyRunOb extends EnetheruUtils.RunObject:
 	var scene_tree : SceneTree
 
 	func _on_scene_tree_timer_timeout() -> void:
-		Util.printy("_on_scene_tree_timer_timeout()", null, self)
+		EditorLog.printy("_on_scene_tree_timer_timeout()", null, self)
 		scene_timer_completed.emit()
 
 	func _on_timer_timeout() -> void:
-		Util.printy("_on_timer_timeout()", null, self)
+		EditorLog.printy("_on_timer_timeout()", null, self)
 		timer_completed.emit()
 
 	func _run() -> void:
-		Util.printy("_run()", null, self)
+		EditorLog.printy("_run()", null, self)
 		scene_tree = p.get_tree()
 
 		timer = Timer.new()
@@ -47,4 +50,4 @@ class MyRunOb extends EnetheruUtils.RunObject:
 
 		await timer.timeout
 		timer.queue_free()
-		Util.printy("H1MyRunOb.Finished")
+		EditorLog.printy("H1MyRunOb.Finished")
