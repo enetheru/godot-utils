@@ -31,3 +31,22 @@ class ScopeGuard:
 		if what == NOTIFICATION_PREDELETE:
 			if _wait: await _callback.call()
 			else: _callback.call()
+
+# Tiny Utility to call a function when a function scope finishes.
+# uses RAII like behaviour so its desruction is the trigger.
+# Also relies on bind to contain arguments.
+
+static func at_end(callable : Callable, ...args:Array) -> AtEnd:
+	return AtEnd.new.callv( [callable] + args)
+
+class AtEnd:
+	var _callable : Callable
+	var _args:Array
+
+	func _init( callable : Callable, ...args:Array ) -> void:
+		_callable = callable
+		_args = args
+
+	func _notification(what: int) -> void:
+			if what == NOTIFICATION_PREDELETE:
+				_callable.callv(_args)

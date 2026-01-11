@@ -49,15 +49,31 @@ static func band( a:int, b:int ) -> bool:
 static func bor( a:int, b:int ) -> bool:
 	return a | b
 
+# Filter
+static func method( a:Variant, b:StringName ) -> bool:
+	var c:Callable = Callable.create(a,b)
+	return c.call()
+
+static func not_method( a:Variant, b:StringName ) -> bool:
+	var c:Callable = Callable.create(a,b)
+	return not c.call()
+
 
 static func keys( d:Dictionary, f:Callable ) -> Array:
 	return d.keys().filter(func(key:Variant) -> Variant:
 		return f.call(d[key]) )
 
 
-# Accumulators
+# Reducers
 static func sumf(acc: float, t: float) -> float:
 	return acc + t
 
 static func max_size(acc: int, t: Variant) -> float:
 	return max( acc, len( t ) )
+
+static func reduce_or(acc: int, t: int) -> int:
+	return acc | t
+
+
+# Map
+static func scalef(x:float, s:float) -> float: return x * s

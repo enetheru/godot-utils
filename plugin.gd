@@ -4,7 +4,7 @@ class_name EnetheruUtils
 
 static var plugin : EnetheruUtils
 
-class RunObject:
+class RunObject extends Node:
 	signal finished
 
 	var p : EnetheruUtils
@@ -15,14 +15,14 @@ class RunObject:
 				) -> void:
 		p = plugin; c = run_func
 
+	func _run() -> void: pass
+
 	func run() -> void:
-		print( "run()" )
 		await c.call()
-		p.active_run = null
 		finished.emit()
 
-	func _run() -> void:
-		print( "_run()" )
+	func delay(seconds:float) -> void:
+		await p.get_tree().create_timer(seconds).timeout
 
 
 static var active_run : RunObject
@@ -33,8 +33,6 @@ func _init() -> void:
 
 
 func _enter_tree() -> void:
-	print("_enter_tree()")
-
 	var editor_theme : Theme = EditorInterface.get_editor_theme()
 	var button_icon : Texture2D = editor_theme.get_icon("Button", "EditorIcons")
 	add_custom_type("RichIconButton", "Control", preload('ui/rich_icon_button.gd'), button_icon)
@@ -43,7 +41,6 @@ func _enter_tree() -> void:
 
 
 func _exit_tree() -> void:
-	print("_exit_tree()")
 	remove_custom_type("RichIconButton")
 
 
@@ -54,14 +51,14 @@ static func check() -> void:
 
 
 static func run( run_func : Callable ) -> void:
-	print("run(%s)" % run_func.get_method())
 	check()
 	active_run = RunObject.new( plugin, run_func )
-	active_run.run()
+	active_run.finished.connect(func()->void: active_run = null)
+	await active_run.run()
 
 
 static func run_object( object : RunObject ) -> void:
-	print("run_object(%s)" % object)
 	check()
 	active_run = object
-	active_run.run()
+	await active_run.run()
+	active_run = null
