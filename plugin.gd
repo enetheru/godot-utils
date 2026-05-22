@@ -37,8 +37,6 @@ func _enter_tree() -> void:
 	var button_icon : Texture2D = editor_theme.get_icon("Button", "EditorIcons")
 	add_custom_type("RichIconButton", "Control", preload('ui/rich_icon_button.gd'), button_icon)
 
-	print( get_path() )
-
 
 func _exit_tree() -> void:
 	remove_custom_type("RichIconButton")
