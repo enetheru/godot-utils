@@ -34,7 +34,6 @@ var style_names : PackedStringArray = [
 	&"focus" ]
 
 
-
 @export var icon_type : String: set = set_icon_type
 @export var icon_name : String: set = set_icon_name
 

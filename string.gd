@@ -72,8 +72,6 @@ static func center(width: int, s: String, pad_char: String = " ") -> String:
 	return s.lpad(s.length() + left_pad, pad_char).rpad(width, pad_char)
 
 
-
-
 var box_heavy : String  = "━┃┏┓┗┛┣┫┳┻╋"
 
 var box_double : String = "═║╔╗╚╝╠╣╦╩╬"

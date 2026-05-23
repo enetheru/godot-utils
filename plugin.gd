@@ -51,7 +51,9 @@ static func check() -> void:
 static func run( run_func : Callable ) -> void:
 	check()
 	active_run = RunObject.new( plugin, run_func )
-	active_run.finished.connect(func()->void: active_run = null)
+	if not active_run.finished.connect(func()->void: active_run = null):
+		print("Error connecting signal")
+		print_stack()
 	await active_run.run()
 
 
